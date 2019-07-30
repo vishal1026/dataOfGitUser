@@ -42,7 +42,7 @@ export class NavbarWithSearch extends React.Component {
             <Nav className="mx-auto " navbar>
               <NavItem style={{marginLeft:'3rem'}}>
                 <FormGroup>
-                  <Input type="select" value={this.state.sortType} onChange={this.handleOnChange} name="select" id="sortType">
+                  <Input type="select" value={this.state.sortType} onChange={this.handleOnChange} name="sortType" id="sortType">
                     <option value='1'>Sort By Name (A - Z)</option>
                     <option value='2'>Sort By Name (Z - A)</option>
                     <option value='3'>Rank ↑</option>
@@ -51,9 +51,14 @@ export class NavbarWithSearch extends React.Component {
                 </FormGroup>
               </NavItem>
               <NavItem style={{marginLeft:'3rem'}}>
+              {/* <div class="form-group has-search">
+                <input type="text" class="form-control" placeholder="Search"/>
+                <span class="fa fa-search form-control-feedback"></span>
+              </div> */}
+
                 <InputGroup>
                   <Input id='searchUser' value={this.state.searchUser}  onChange={this.handleOnChange} placeholder="search" />
-                  <InputGroupAddon addonType="append"><span className="fa fa-search form-control-feedback"></span></InputGroupAddon>
+                  {/* <InputGroupAddon addonType="append"><i className="fa fa-search"></i></InputGroupAddon> */}
                 </InputGroup>
               </NavItem>
             </Nav>
