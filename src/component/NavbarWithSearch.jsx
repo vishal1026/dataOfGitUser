@@ -18,6 +18,7 @@ export class NavbarWithSearch extends React.Component {
     this.toggle = this.toggle.bind(this);
     this.state = {
       searchUser: '',
+      sortType: '1',
       isOpen: false
     };
   }
@@ -29,6 +30,7 @@ export class NavbarWithSearch extends React.Component {
 
   handleOnChange = (event) =>{
     this.setState({[event.target.id]:event.target.value});
+    console.log(this.state.sortType);
   }
 
   render() {
@@ -40,11 +42,11 @@ export class NavbarWithSearch extends React.Component {
             <Nav className="mx-auto " navbar>
               <NavItem style={{marginLeft:'3rem'}}>
                 <FormGroup>
-                  <Input type="select" name="select" id="exampleSelect">
-                    <option>Sort By Name (A - Z)</option>
-                    <option>Sort By Name (Z - A)</option>
-                    <option>Rank ↑</option>
-                    <option>Rank ↓</option>
+                  <Input type="select" value={this.state.sortType} onChange={this.handleOnChange} name="select" id="sortType">
+                    <option value='1'>Sort By Name (A - Z)</option>
+                    <option value='2'>Sort By Name (Z - A)</option>
+                    <option value='3'>Rank ↑</option>
+                    <option value='4'>Rank ↓</option>
                   </Input>
                 </FormGroup>
               </NavItem>
