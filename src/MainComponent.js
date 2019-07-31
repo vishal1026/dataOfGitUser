@@ -31,9 +31,9 @@ class MainComponent extends React.Component {
     );
   }
 }
-// MainComponent.propTypes = {
-//     fetchUsers : PropTypes.func.isRequired,
-//     users : PropTypes.object.isRequired
-// }
-const mapStateToProps = state => ({users:state.usersData});
+MainComponent.propTypes = {
+    fetchUsers : PropTypes.func.isRequired,
+    users : PropTypes.object.isRequired
+}
+const mapStateToProps = state => ({users:state.users});
 export default connect(mapStateToProps, { fetchUsers })(MainComponent);
