@@ -51,7 +51,7 @@ export class UserView extends React.Component {
     let users = this.props.users;
     console.log("user", users);
     return (
-      <div className='mx-auto p-3 bg-light'>
+      <div>
         <p><strong>Total Result:{(users)? users.total_count:null}</strong></p>
         {(users) ? this.getCard(users):null}
 

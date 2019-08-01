@@ -5,6 +5,7 @@ import './App.css';
 import {fetchUsers} from './actions/usersAction';
 import {NavbarWithSearch} from './component/NavbarWithSearch'
 import {UserView} from './component/UserView'
+import {Pagination} from './component/Pagination'
 
 class MainComponent extends React.Component {
   state = {
@@ -26,7 +27,10 @@ class MainComponent extends React.Component {
     return (
       <div>
         <NavbarWithSearch/>
-        <UserView users={this.props.users.users}/>
+        <div className='mx-auto p-3 bg-light'>
+          <UserView users={this.props.users.users}/>
+          <Pagination/>
+        </div>
       </div>
     );
   }
