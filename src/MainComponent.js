@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux';
 import './App.css';
-import {fetchUsers} from './actions/usersAction'
+import {fetchUsers} from './actions/usersAction';
 import {NavbarWithSearch} from './component/NavbarWithSearch'
+import {UserView} from './component/UserView'
+import {Pagination} from './component/Pagination'
 
 class MainComponent extends React.Component {
   state = {
@@ -22,11 +24,13 @@ class MainComponent extends React.Component {
 //     .catch((error)=>console.log(error));
 //   }
   render() {
-      console.log("test", this.props);
     return (
       <div>
-        {/* {this.getUser('vishal')} */}
-      <NavbarWithSearch/>
+        <NavbarWithSearch/>
+        <div className='mx-auto p-3 bg-light'>
+          <UserView users={this.props.users.users}/>
+          <Pagination/>
+        </div>
       </div>
     );
   }
