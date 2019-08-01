@@ -32,17 +32,13 @@
   }
 }
 
-
-
 /* Styles for wrapping the search box */
-
 .main {
   width: 50%;
   margin: 50px auto;
 }
 
 /* Bootstrap 3 text input with search icon */
-
 .has-search .form-control-feedback {
   right: initial;
   left: 0;
@@ -69,7 +65,26 @@
   pointer-events: none;
   color: #aaa;
 }
+
 .card-horizontal {
   display: flex;
   flex: 1 1 auto;
+}
+
+#page-numbers {
+  list-style: none;
+  display: flex;
+}
+
+#page-numbers > li {
+  margin-right: 0.3em;
+  color: black;
+  user-select: none;
+  cursor: pointer;
+}
+#page-numbers > li .active {
+  margin-right: 0.3em;
+  color: blue;
+  user-select: none;
+  cursor: pointer;
 }

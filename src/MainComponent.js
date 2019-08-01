@@ -28,8 +28,10 @@ class MainComponent extends React.Component {
       <div>
         <NavbarWithSearch/>
         <div className='mx-auto p-3 bg-light'>
-          <UserView users={this.props.users.users}/>
-          <Pagination/>
+          <div className='bg-light'>
+            <UserView users={this.props.users.users}/>
+            <Pagination/>
+          </div>
         </div>
       </div>
     );

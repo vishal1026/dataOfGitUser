@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  Collapse, Card, CardImg, CardText, CardBody,
-  CardTitle, CardSubtitle, Button  } from 'reactstrap';
+  Collapse, Card, CardText, CardBody,
+  CardTitle, CardSubtitle, Button, Table  } from 'reactstrap';
 import '../App.css';
 
 export class UserView extends React.Component {
@@ -12,24 +12,28 @@ export class UserView extends React.Component {
     this.state = {
       searchUser: '',
       sortType: '1',
-      isOpen: false
+      isOpen: false,
+      collapse : false
     };
   }
-  toggle() {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
-  }
+  // toggle() {
+  //   this.setState({
+  //     isOpen: !this.state.isOpen
+  //   });
+  // }
 
+  toggle= (event)=> {
+    this.setState(state => ({ collapse: !state.collapse }));
+  }
   handleOnChange = (event) =>{
     this.setState({[event.target.id]:event.target.value});
     console.log(this.state.sortType);
   }
   getCard = (users) => {
     return (
-      users.items.map((user)=>{
+      users.items.map((user,index)=>{
         return(
-          <Card className='w-75 h-25 p-3 mt-3'>
+          <Card className='w-75 h-25 p-3 mt-3' key={index}>
             <div className="card-horizontal">
               <div>
               {/* <img width='150' height='150' className="rounded-circle" src="https://avatars1.githubusercontent.com/u/1388100?v=4/"/> */}
@@ -38,8 +42,32 @@ export class UserView extends React.Component {
               <CardBody>
                 <CardTitle><strong>{user.login}</strong></CardTitle>
                 <CardSubtitle><small>Profile URL : {user.html_url}</small></CardSubtitle>
-                <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                <Button>Details</Button>
+                <CardText>
+                  Score : {user.score}<br></br>
+                  ID : {user.id}
+                  {/* <Button className='float-right'>Details</Button> */}
+                  <Button color="primary" className='float-right' onClick={this.toggle} style={{ marginBottom: '1rem' }}>
+                    {(this.state.collapse) ? 'Collapse': 'Details' }
+                  </Button>
+                </CardText>
+                <Collapse isOpen={this.state.collapse}>
+                  <Table className='table table-striped'>
+                    <tbody>
+                      <tr>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                      </tr>
+                      <tr>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                      </tr>
+                      <tr>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                      </tr>
+                    </tbody>
+                  </Table>
+                </Collapse>
               </CardBody>
             </div>
           </Card>
