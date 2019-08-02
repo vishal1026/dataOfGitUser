@@ -8,31 +8,49 @@ import {UserView} from './component/UserView'
 import {Pagination} from './component/Pagination'
 
 class MainComponent extends React.Component {
-  state = {
-    result : {},
-    name : 'vishal'
+  constructor(props) {
+    super(props);
+    this.state = {
+      result : {},
+      // searchUser : ''
+    };
+  }
+  // componentWillMount(){
+  //     this.props.fetchUsers('');
+  // }
+  getUsersName=(userURL)=>{
+    fetch(userURL)
+    .then((response) => response.json())
+    .then((data)=>{console.log(data)})
+    .catch((error)=>console.log(error));
   }
 
-  componentWillMount(){
-      this.props.fetchUsers();
+  getModifiedData =(users)=> {
+    for(let i=0; i<users.items.length; i++){
+      console.log(users.items[i])
+    }
   }
-//   componentDidMount(){
-//     let name = 'vishal';
-//     fetch(`https://api.github.com/search/users?q=${name}`)
-//     .then((response) => response.json())
-//     .then((data)=>{console.log(data)})
-//     .catch((error)=>console.log(error));
-//   }
+
+changeSearchUser = (searchUser) =>{
+  // this.setState({searchUser});
+  this.props.fetchUsers(searchUser);
+  console.log('changeSearchUser',searchUser);
+  // console.log('changeState',this.state.searchUser);
+}
   render() {
+    let users = this.props.users.users;
+    console.log(users);
     return (
       <div>
-        <NavbarWithSearch/>
+        <NavbarWithSearch changeSearchUser={this.changeSearchUser}/>
+        {(users && users.total_count)?
         <div className='mx-auto p-3 bg-light pb-5'>
           <div className='bg-light'>
-            <UserView users={this.props.users.users}/>
+            {/* { users = this.getModifiedData(users) } */}
+            <UserView users={users}/>
             <Pagination/>
           </div>
-        </div>
+        </div>:null}
       </div>
     );
   }

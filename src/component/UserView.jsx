@@ -83,9 +83,9 @@ export class UserView extends React.Component {
       <div>
         <div className="w-50 mx-auto">
           <div className="h-25 p-3 mt-3">
-            <p><strong>Total Result:{(users)? users.total_count:null}</strong></p>
+            <p><strong>Total Result:{users.total_count}</strong></p>
           </div>
-            {(users) ? this.getCard(users):null}
+            {this.getCard(users)}
         </div>
       </div>
     );
