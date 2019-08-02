@@ -11,24 +11,37 @@ class MainComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      result : {},
+      users : {},
       // searchUser : ''
     };
   }
   // componentWillMount(){
   //     this.props.fetchUsers('');
   // }
-  getUsersName=(userURL)=>{
-    fetch(userURL)
-    .then((response) => response.json())
-    .then((data)=>{console.log(data)})
-    .catch((error)=>console.log(error));
+  async getUsersName(userURL){
+    // fetch(userURL)
+    // .then((response) => response.json())
+    // .then((data)=>{return(data)})
+    // .catch((error)=>console.log(error));
+    const response = await fetch(userURL)
+    const json = await response.json()
+    console.log('json',json);
+    return(json);
   }
 
-  getModifiedData =(users)=> {
+  async getModifiedData (users){
+    // console.log("aaaaaaaaaaa",users.items[0].id);
+    let temp ={};
     for(let i=0; i<users.items.length; i++){
-      console.log(users.items[i])
+      // temp = users.items[i]
+      temp = await this.getUsersName(users.items[i].url)
+
+      // users.items[i] = {...users.items[i], ...this.getUsersName(users.items[i].url)}
+      // console.log('users.items[i]',users.items[i])
+      // console.log('this.getUsersName(users.items[i].url)', this.getUsersName(users.items[i].url).PromiseValue)
+      console.log('temp', temp);
     }
+    // return users;
   }
 
 changeSearchUser = (searchUser) =>{
@@ -39,18 +52,18 @@ changeSearchUser = (searchUser) =>{
 }
   render() {
     let users = this.props.users.users;
-    console.log(users);
     return (
       <div>
-        <NavbarWithSearch changeSearchUser={this.changeSearchUser}/>
+        <NavbarWithSearch changeSearchUser={this  .changeSearchUser}/>
         {(users && users.total_count)?
         <div className='mx-auto p-3 bg-light pb-5'>
           <div className='bg-light'>
-            {/* { users = this.getModifiedData(users) } */}
+            {/* { this.getModifiedData(users) } */}
+            {/* {console.log(users.items)} */}
             <UserView users={users}/>
             <Pagination/>
           </div>
-        </div>:null}
+        </div>: <div className='mx-auto'><span>No record found</span></div>}
       </div>
     );
   }
