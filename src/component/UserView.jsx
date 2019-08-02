@@ -21,13 +21,23 @@ export class UserView extends React.Component {
   //     isOpen: !this.state.isOpen
   //   });
   // }
+  sortByScoreAsc() {
+    this.setState(prevState => {
+      this.state.users.items.sort((a, b) => (a.score - b.score))
+    });
+  }
+
+  sortByScoreDesc() {
+    this.setState(prevState => {
+      this.state.users.items.sort((a, b) => (b.score - a.score))
+   });
+  }
 
   toggle= (event)=> {
     this.setState(state => ({ collapse: !state.collapse }));
   }
   handleOnChange = (event) =>{
     this.setState({[event.target.id]:event.target.value});
-    console.log(this.state.sortType);
   }
   getCard = (users) => {
     return (

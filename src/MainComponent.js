@@ -8,14 +8,31 @@ import {UserView} from './component/UserView'
 import {Pagination} from './component/Pagination'
 
 class MainComponent extends React.Component {
-  state = {
-    result : {},
-    name : 'vishal'
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      searchUser: '',
+      users:{},
+      sortType: '1',
+      isOpen: false,
+      fetchedData : false
+    };
   }
 
   componentWillMount(){
-      this.props.fetchUsers();
+    this.props.fetchUsers();
+    if (this.props.users.users){
+      this.setState({
+        users : this.props.users,
+        fetchedData : true
+      })
+    }
   }
+componentDidMount(){
+  // this.props.fetchUsers();
+  console.log("will mount",this.props.users)
+}
 //   componentDidMount(){
 //     let name = 'vishal';
 //     fetch(`https://api.github.com/search/users?q=${name}`)
@@ -23,15 +40,54 @@ class MainComponent extends React.Component {
 //     .then((data)=>{console.log(data)})
 //     .catch((error)=>console.log(error));
 //   }
+
+sortByScoreAsc() {
+  this.setState(prevState => {
+    this.state.users.items.sort((a, b) => (a.score - b.score))
+  });
+}
+
+sortByScoreDesc() {
+  this.setState(prevState => {
+    this.state.users.items.sort((a, b) => (b.score - a.score))
+ });
+}
+
+  sortHandler = (sortType) =>{
+    let users = (this.state.users.users)? this.state.users : this.props.users;
+
+    console.log('users',users, 'sortType', sortType);
+    switch(sortType){
+      case 1:
+          users.users.items.sort((a, b) => (a.login + b.login))
+        break;
+      case 2:
+        users.users.items.sort((a, b) => (a.login < b.login))
+        break;
+      case 3:
+          users.users.items.sort((a, b) => (a.score + b.score))
+        break;
+      case 4:
+        users.users.items.sort((a, b) => (a.score - b.score))
+        break;
+      default:
+        break;
+     }
+     this.setState({users})
+  }
+
   render() {
+    let users = (this.state.users.users)? this.state.users.users : this.props.users.users;
     return (
       <div>
-        <NavbarWithSearch/>
+        <NavbarWithSearch sortHandler={this.sortHandler}/>
         <div className='mx-auto p-3 bg-light pb-5'>
+        { (this.state.fetchedData) ?
           <div className='bg-light'>
-            <UserView users={this.props.users.users}/>
+            <UserView users={users}/>
             <Pagination/>
-          </div>
+          </div>:null
+        }
         </div>
       </div>
     );

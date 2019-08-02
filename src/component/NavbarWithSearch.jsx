@@ -18,6 +18,7 @@ export class NavbarWithSearch extends React.Component {
     this.toggle = this.toggle.bind(this);
     this.state = {
       searchUser: '',
+      users:this.props.users,
       sortType: '1',
       isOpen: false
     };
@@ -30,6 +31,7 @@ export class NavbarWithSearch extends React.Component {
 
   handleOnChange = (event) =>{
     this.setState({[event.target.id]:event.target.value});
+    this.props.sortHandler(Number(event.target.value))
     console.log(this.state.sortType);
   }
 
