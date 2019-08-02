@@ -27,7 +27,7 @@ class MainComponent extends React.Component {
     return (
       <div>
         <NavbarWithSearch/>
-        <div className='mx-auto p-3 bg-light'>
+        <div className='mx-auto p-3 bg-light pb-5'>
           <div className='bg-light'>
             <UserView users={this.props.users.users}/>
             <Pagination/>

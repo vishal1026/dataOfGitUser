@@ -29,13 +29,15 @@ export class Pagination extends React.Component {
     let users = this.props.users;
     console.log("user", users);
     return (
-      <div className="float-right">
-        <ul id='page-numbers'>
-          <li id={1} key={1} onClick={this.handleOnClick}>1</li>
-          <li id={2} key={2} onClick={this.handleOnClick}>2</li>
-          <li id={3} key={3} onClick={this.handleOnClick}>3</li>
-          <li id={4} key={4} onClick={this.handleOnClick}>4</li>
-        </ul>
+      <div className="container">
+        <div className="float-right mt-2 mb-0">
+          <ul id='page-numbers'>
+            <li className="pgn-active" id={1} key={1} onClick={this.handleOnClick}>1</li>
+            <li id={2} key={2} onClick={this.handleOnClick}>2</li>
+            <li id={3} key={3} onClick={this.handleOnClick}>3</li>
+            <li id={4} key={4} onClick={this.handleOnClick}>4</li>
+          </ul>
+        </div>
       </div>
     );
   }
