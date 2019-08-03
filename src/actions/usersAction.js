@@ -1,5 +1,5 @@
 
-import {FETCH_USERS} from './types';
+import {FETCH_USERS , SORT_DATA} from './types';
 
 // export const fetchUsers = (name) => dispatch => {
 //     fetch(`https://api.github.com/search/users?q=${name}`)
@@ -10,7 +10,12 @@ import {FETCH_USERS} from './types';
 //     }))
 //     .catch((error)=>console.log(error));
 // }
-
+export const sortUserData = (users) => dispatch => {
+    dispatch({
+        type : FETCH_USERS,
+        payload : users
+    })
+}
 export const fetchUsers = (name) => dispatch => {
     let users = {};
 
@@ -25,7 +30,7 @@ export const fetchUsers = (name) => dispatch => {
             fetch(userArray[i].url).then(function(response){
                 return(response.json());
             }).then(function(data){
-                console.log("nested",data);
+                // console.log("nested",data);
                 users.items[i] = {...userArray[i], ...data}
             })
         }
