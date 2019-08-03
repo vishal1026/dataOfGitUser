@@ -41,11 +41,11 @@ export class UserView extends React.Component {
                 <img width='150' height='150' className="rounded-circle" src={user.avatar_url}/>
               </div>
               <CardBody>
-                <CardTitle><strong>{user.login}</strong></CardTitle>
+                <CardTitle><strong>{user.name}</strong></CardTitle>
                 <CardSubtitle><small>Profile URL : {user.html_url}</small></CardSubtitle>
                 <CardText>
                   Score : {user.score}<br></br>
-                  ID : {user.id}
+                  Followers : {user.followers}
                   {/* <Button className='float-right'>Details</Button> */}
                   <Button outline color="primary" className='float-right' onClick={this.toggle} style={{ marginBottom: '1rem' }}>
                     {(this.state.collapse) ? 'Collapse': 'Details' }
