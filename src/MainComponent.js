@@ -8,31 +8,30 @@ import {UserView} from './component/UserView'
 import {Pagination} from './component/Pagination'
 
 class MainComponent extends React.Component {
-  state = {
-    result : {},
-    name : 'vishal'
+  constructor(props) {
+    super(props);
+    this.state = {
+      users : {},
+      // searchUser : ''
+    };
   }
 
-  componentWillMount(){
-      this.props.fetchUsers();
+  changeSearchUser = (searchUser) =>{
+    this.props.fetchUsers(searchUser);
   }
-//   componentDidMount(){
-//     let name = 'vishal';
-//     fetch(`https://api.github.com/search/users?q=${name}`)
-//     .then((response) => response.json())
-//     .then((data)=>{console.log(data)})
-//     .catch((error)=>console.log(error));
-//   }
+
   render() {
+    let users = this.props.users.users;
     return (
       <div>
-        <NavbarWithSearch/>
+        <NavbarWithSearch changeSearchUser={this.changeSearchUser}/>
+        {(users && users.total_count)?
         <div className='mx-auto p-3 bg-light pb-5'>
           <div className='bg-light'>
-            <UserView users={this.props.users.users}/>
+            <UserView users={users}/>
             <Pagination/>
           </div>
-        </div>
+        </div>: <div className='mx-auto'><span>No record found</span></div>}
       </div>
     );
   }

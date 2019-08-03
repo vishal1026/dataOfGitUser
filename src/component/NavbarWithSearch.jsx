@@ -14,7 +14,6 @@ import '../App.css';
 export class NavbarWithSearch extends React.Component {
   constructor(props) {
     super(props);
-
     this.toggle = this.toggle.bind(this);
     this.state = {
       searchUser: '',
@@ -22,6 +21,7 @@ export class NavbarWithSearch extends React.Component {
       isOpen: false
     };
   }
+
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
@@ -30,7 +30,13 @@ export class NavbarWithSearch extends React.Component {
 
   handleOnChange = (event) =>{
     this.setState({[event.target.id]:event.target.value});
-    console.log(this.state.sortType);
+  }
+
+  handleInputChange = (event) =>{
+    this.setState({[event.target.id]:event.target.value});
+    if(event.target.value){
+      this.props.changeSearchUser(event.target.value);
+    }
   }
 
   render() {
@@ -53,7 +59,7 @@ export class NavbarWithSearch extends React.Component {
               <NavItem>
                 <InputGroup>
                   <span style={{position: 'relative'}} >
-                    <Input id='searchUser' value={this.state.searchUser}  onChange={this.handleOnChange} placeholder="search" />
+                    <Input id='searchUser' value={this.state.searchUser} onChange={this.handleOnChange} onBlur={this.handleInputChange} placeholder="search" />
                     <i className="fa fa-search" style={{position: 'absolute', right: '10px', top: '10px', color: 'darkgray'}}></i>
                   </span>
                 </InputGroup>
