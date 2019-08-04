@@ -19,7 +19,7 @@ export const sortUserData = (users) => dispatch => {
 export const fetchUsers = (name) => dispatch => {
     let users = {};
 
-    let result = fetch(`https://api.github.com/search/users?q=${name}`, {
+    fetch(`https://api.github.com/search/users?q=${name}`, {
         method: 'get',
     }).then(function(response) {
         return response.json();
@@ -32,7 +32,7 @@ export const fetchUsers = (name) => dispatch => {
             }).then(function(data){
                 // console.log("nested",data);
                 users.items[i] = {...userArray[i], ...data}
-            })
+            }).catch((error)=>console.log(error))
         }
         dispatch({
             type : FETCH_USERS,

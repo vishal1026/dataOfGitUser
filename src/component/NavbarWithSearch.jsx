@@ -30,12 +30,13 @@ export class NavbarWithSearch extends React.Component {
 
   handleOnChange = (event) =>{
     this.setState({[event.target.id]:event.target.value});
-    this.props.sortHandler(event.target.value);
-
+    if (event.target.id === 'sortType'){
+      this.props.sortHandler(Number(event.target.value));
+    }
   }
 
   handleInputChange = (event) =>{
-    this.setState({[event.target.id]:event.target.value});
+    // this.setState({[event.target.id]:event.target.value});
     if(event.target.value){
       this.props.changeSearchUser(event.target.value);
     }

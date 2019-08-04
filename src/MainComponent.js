@@ -10,7 +10,7 @@ import {Pagination} from './component/Pagination'
 class MainComponent extends React.Component {
   constructor(props) {
     super(props);
-
+    this.changeSearchUser = this.changeSearchUser.bind(this);
     this.state = {
       searchUser: '',
       users:{},
@@ -19,12 +19,47 @@ class MainComponent extends React.Component {
       fetchedData : false
     };
   }
-  componentWillMount(){
-    this.props.fetchUsers();
-  }
-  changeSearchUser = (searchUser) =>{
-    this.props.fetchUsers(searchUser);
-    // this.setState({users:this.props.fetchUsers(searchUser),fetchedData : true })
+  // async componentDidMount(){
+  //   let users = await this.props.fetchUsers();
+  //   this.setState({users, fetchUsers:true})
+  // }
+  fetchUsers = (name) => dispatch => {
+    let users = {};
+
+    fetch(`https://api.github.com/search/users?q=${name}`, {
+        method: 'get',
+    }).then(function(response) {
+        return response.json();
+    }).then(function(data) {
+        let userArray = data.items;
+        users = data;
+        for(let i=0;i<userArray.length; i++){
+            fetch(userArray[i].url).then(function(response){
+                return(response.json());
+            }).then(function(data){
+                // console.log("nested",data);
+                users.items[i] = {...userArray[i], ...data}
+            }).catch((error)=>console.log(error))
+        }
+        // dispatch({
+        //     type : FETCH_USERS,
+        //             payload : users
+        //         })
+        // return users;
+        this.setState({users})
+    })
+    .catch(function(error) {
+        console.log('Request failed', error)
+    })
+}
+
+
+  async changeSearchUser (searchUser){
+    console.log('search',searchUser);
+    let users = await this.fetchUsers(searchUser);
+    users = await this.props.users;
+    console.log("users:", users);
+    this.setState({users,fetchedData : true })
   }
 
   sortByScoreAsc() {
@@ -42,7 +77,7 @@ class MainComponent extends React.Component {
   sortHandler = (sortType) =>{
     let users = (this.state.users)? this.state.users : this.props.users;
 
-    console.log('users',users, 'sortType', sortType);
+    console.log('users in sort',users, 'sortType', sortType);
     switch(sortType){
       case 1:
           users.users.items.sort((a, b) => (a.login + b.login))
@@ -60,17 +95,18 @@ class MainComponent extends React.Component {
         break;
      }
     //  this.props.sortUserData(users);
-    //  this.setState({users})
+     this.setState({users})
   }
 
   render() {
     // let users = (this.state.users)? this.state.users.users : this.props.users.users;
-    let users = this.state.users.users;
+    let users = this.props.users;
+    console.log("state",users);
 
     return (
       <div>
         <NavbarWithSearch sortHandler={this.sortHandler} changeSearchUser={this.changeSearchUser}/>
-        {(users && users.total_count)?
+        {(users && users.users.total_count>0)?
         // {(this.state.fetchedData)?
         <div className='mx-auto p-3 bg-light pb-5'>
           <div className='bg-light'>
@@ -86,5 +122,5 @@ MainComponent.propTypes = {
     fetchUsers : PropTypes.func.isRequired,
     users : PropTypes.object.isRequired
 }
-const mapStateToProps = state => ({users: users});
+const mapStateToProps = state => ({users : state.users});
 export default connect(mapStateToProps, { fetchUsers })(MainComponent);
