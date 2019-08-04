@@ -14,7 +14,7 @@ import {FETCH_USERS} from './types';
 export const fetchUsers = (name) => dispatch => {
     let users = {};
 
-    let result = fetch(`https://api.github.com/search/users?q=${name}`, {
+    fetch(`https://api.github.com/search/users?q=${name}`, {
         method: 'get',
     }).then(function(response) {
         return response.json();

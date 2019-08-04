@@ -7,7 +7,6 @@ import {
   NavItem,
   Input,
   InputGroup,
-  InputGroupAddon,
   FormGroup } from 'reactstrap';
 import '../App.css';
 
