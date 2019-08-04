@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Collapse, Card, CardText, CardBody,
-  CardTitle, CardSubtitle, Button, Table  } from 'reactstrap';
+  CardTitle, CardSubtitle, Button  } from 'reactstrap';
 import '../App.css';
 
 export class UserView extends React.Component {
@@ -13,31 +13,34 @@ export class UserView extends React.Component {
       searchUser: '',
       sortType: '1',
       isOpen: false,
-      collapse : false
+      collapse : false,
+      collapseDiv : '',
+      repoList : []
     };
   }
-  // toggle() {
-  //   this.setState({
-  //     isOpen: !this.state.isOpen
-  //   });
-  // }
 
   toggle= (event)=> {
-    this.setState(state => ({ collapse: !state.collapse }));
+    if (!this.state.collapse){
+      let repoUrl = "https://api.github.com/users/"+event.target.id+"/repos"
+      this.apiCaller(repoUrl);
+    }
+    this.setState({collapse: !this.state.collapse, collapseDiv:event.target.id });
   }
-  handleOnChange = (event) =>{
-    this.setState({[event.target.id]:event.target.value});
-    console.log(this.state.sortType);
+
+  apiCaller=(url)=>{
+  fetch(url)
+  .then((response) => response.json())
+    .then((repoList)=>{this.setState({repoList})})
+    .catch((error)=>console.log(error));
   }
+
   getCard = (users) => {
     return (
       users.items.map((user,index)=>{
         return(
-
           <Card className='h-25 p-3 mt-3 mx-auto' key={index}>
             <div className="card-horizontal">
               <div>
-              {/* <img width='150' height='150' className="rounded-circle" src="https://avatars1.githubusercontent.com/u/1388100?v=4/"/> */}
                 <img width='150' height='150' className="rounded-circle" src={user.avatar_url}/>
               </div>
               <CardBody>
@@ -46,39 +49,38 @@ export class UserView extends React.Component {
                 <CardText>
                   Score : {user.score}<br></br>
                   Followers : {user.followers}
-                  {/* <Button className='float-right'>Details</Button> */}
-                  <Button outline color="primary" className='float-right' onClick={this.toggle} style={{ marginBottom: '1rem' }}>
-                    {(this.state.collapse) ? 'Collapse': 'Details' }
+                  <Button outline color="primary" className='float-right' id={user.login} onClick={this.toggle} style={{ marginBottom: '1rem' }}>
+                    {((user.login === this.state.collapseDiv) && this.state.collapse) ? 'Collapse': 'Details' }
                   </Button>
                 </CardText>
               </CardBody>
             </div>
-            <Collapse isOpen={this.state.collapse}>
-              <Table className='table table-striped'>
-                <tbody>
-                  <tr>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                  </tr>
-                  <tr>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                  </tr>
-                  <tr>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                  </tr>
-                </tbody>
-              </Table>
+            <Collapse isOpen={((user.login === this.state.collapseDiv) && this.state.collapse)? true:false}>
+            {
+              ((user.login === this.state.collapseDiv) && this.state.collapse)?
+              <table className="table table-striped">
+              <tbody>
+                {(this.state.repoList.length>0) ?
+                (this.state.repoList.map((repo)=>{
+                  return (
+                    <tr key={repo.name}>
+                      <td>{repo.name}</td>
+                      <td>{repo.language}</td>
+                    </tr>
+              )}))
+              :null}
+              </tbody>
+            </table>:null
+            }
             </Collapse>
           </Card>
         );
       })
     );
   }
+
   render() {
     let users = this.props.users;
-    console.log("user", users);
     return (
       <div>
         <div className="w-50 mx-auto">
